@@ -25,7 +25,7 @@ if(loginBtn){
     let users=JSON.parse(localStorage.getItem('users')||'{}');
     if(!users[email] || users[email].pass!==pass){info.textContent='Chybný email nebo heslo.'; return;}
     localStorage.setItem('currentUser',email);
-    window.location.href='app.html';
+    window.location.href='main.html';
   }
 }
 
