@@ -1,95 +1,77 @@
-const api = (path, opts={}) => fetch(path, Object.assign({credentials:'include',headers:{'Content-Type':'application/json'}}, opts)).then(async r => { const txt = await r.text(); try{return JSON.parse(txt)}catch(e){return txt}});
+// --- Registrace ---
+const regBtn = document.getElementById('registerBtn');
+if(regBtn){
+  regBtn.onclick = ()=>{
+    const email=document.getElementById('regEmail').value.trim();
+    const name=document.getElementById('regName').value.trim();
+    const pass=document.getElementById('regPass').value;
+    const info=document.getElementById('regInfo');
+    if(!email||!name||!pass){info.textContent='Vyplň prosím všechna pole.'; return;}
+    let users=JSON.parse(localStorage.getItem('users')||'{}');
+    if(users[email]){info.textContent='Tento email je již registrován.'; return;}
+    users[email]={name,pass,date:Date.now()};
+    localStorage.setItem('users',JSON.stringify(users));
+    info.textContent='Registrace úspěšná. Můžeš se přihlásit.';
+  }
+}
 
-const preview = document.getElementById('preview');
-const registerBtn = document.getElementById('registerBtn');
+// --- Přihlášení ---
 const loginBtn = document.getElementById('loginBtn');
-const authScreen = document.getElementById('authScreen');
-const authTitle = document.getElementById('authTitle');
-const authEmail = document.getElementById('authEmail');
-const authName = document.getElementById('authName');
-const authPass = document.getElementById('authPass');
-const authSubmit = document.getElementById('authSubmit');
-const authCancel = document.getElementById('authCancel');
-const authInfo = document.getElementById('authInfo');
+if(loginBtn){
+  loginBtn.onclick = ()=>{
+    const email=document.getElementById('loginEmail').value.trim();
+    const pass=document.getElementById('loginPass').value;
+    const info=document.getElementById('loginInfo');
+    let users=JSON.parse(localStorage.getItem('users')||'{}');
+    if(!users[email] || users[email].pass!==pass){info.textContent='Chybný email nebo heslo.'; return;}
+    localStorage.setItem('currentUser',email);
+    window.location.href='app.html';
+  }
+}
 
-const appRoot = document.getElementById('appRoot');
-const userNameTop = document.getElementById('userNameTop');
-const userEmailTop = document.getElementById('userEmailTop');
-const userGreeting = document.getElementById('userGreeting');
-const logoutBtn = document.getElementById('logout');
-const backToPreview = document.getElementById('backToPreview');
-const inpName = document.getElementById('inpName');
-const saveName = document.getElementById('saveName');
-const inpCurrent = document.getElementById('inpCurrent');
-const inpNewPass = document.getElementById('inpNewPass');
-const savePass = document.getElementById('savePass');
-const inpNewEmail = document.getElementById('inpNewEmail');
-const sendEmailConfirm = document.getElementById('sendEmailConfirm');
-const nameHint = document.getElementById('nameHint');
-
-let currentUser = null;
-
-// --- auth screen logic ---
-registerBtn.onclick = () => openAuth('register');
-loginBtn.onclick = () => openAuth('login');
-authCancel.onclick = () => closeAuth();
-
-function openAuth(mode){
-    authScreen.style.display='flex';
-    authTitle.textContent = mode==='register'?'Registrace':'Přihlášení';
-    authInfo.textContent='';
-    authSubmit.onclick = async ()=>{
-        let email = authEmail.value.trim();
-        let name = authName.value.trim();
-        let pass = authPass.value;
-        let res = await api(`/api/${mode}`, {method:'POST', body:JSON.stringify({email,name,pass})});
-        if(res.success){
-            closeAuth();
-            loadApp(res.user);
-        } else authInfo.textContent = res.error||'Chyba';
+// --- Hlavní aplikace ---
+const currentUser=localStorage.getItem('currentUser');
+if(currentUser){
+  const users=JSON.parse(localStorage.getItem('users')||'{}');
+  if(users[currentUser]){
+    document.getElementById('accName').value=users[currentUser].name;
+    document.getElementById('accEmail').value=currentUser;
+    const saveNameBtn=document.getElementById('saveName');
+    const nameHint=document.getElementById('nameHint');
+    saveNameBtn.onclick=()=>{
+      const now=Date.now();
+      const lastChange=users[currentUser].lastNameChange||0;
+      const diff=Math.floor((now-lastChange)/(1000*60*60*24));
+      if(diff<7){nameHint.textContent=`Změna jména již proběhla, znovu za ${7-diff} dní`; return;}
+      users[currentUser].name=document.getElementById('accName').value.trim();
+      users[currentUser].lastNameChange=now;
+      localStorage.setItem('users',JSON.stringify(users));
+      nameHint.textContent='Jméno změněno.';
     }
-}
-function closeAuth(){ authScreen.style.display='none'; }
-
-// --- app logic ---
-function loadApp(user){
-    currentUser = user;
-    preview.style.display='none';
-    appRoot.style.display='grid';
-    userNameTop.textContent=user.name;
-    userEmailTop.textContent=user.email;
-    userGreeting.textContent=user.name;
-    inpName.value = user.name;
-    updateNameHint();
-}
-
-logoutBtn.onclick=async()=>{
-    await api('/api/logout',{method:'POST'});
-    location.reload();
-}
-backToPreview.onclick=()=>{
-    appRoot.style.display='none';
-    preview.style.display='block';
-}
-
-// --- name change ---
-saveName.onclick=async()=>{
-    let newName = inpName.value.trim();
-    if(!newName) return;
-    let res = await api('/api/change-name',{method:'POST',body:JSON.stringify({newName})});
-    if(res.success){
-        currentUser.name=newName;
-        userNameTop.textContent=newName;
-        userGreeting.textContent=newName;
-        updateNameHint();
-    } else {
-        nameHint.textContent = res.error;
+    document.getElementById('savePass').onclick=()=>{
+      const newPass=document.getElementById('accPass').value;
+      if(!newPass){alert('Zadej nové heslo'); return;}
+      users[currentUser].pass=newPass;
+      localStorage.setItem('users',JSON.stringify(users));
+      alert('Heslo změněno.');
     }
-}
-function updateNameHint(){
-    api('/api/name-info').then(res=>{
-        if(res.daysLeft>0){
-            nameHint.textContent = `Změna jména již proběhla, zbývá ${res.daysLeft} dní`;
-        } else nameHint.textContent = 'Jméno lze měnit 1× za 7 dní.';
-    })
+    document.getElementById('saveEmail').onclick=()=>{
+      const newEmail=document.getElementById('accEmail').value.trim();
+      if(!newEmail){alert('Zadej email'); return;}
+      if(users[newEmail] && newEmail!==currentUser){alert('Email již existuje'); return;}
+      users[newEmail]=users[currentUser];
+      delete users[currentUser];
+      localStorage.setItem('users',JSON.stringify(users));
+      localStorage.setItem('currentUser',newEmail);
+      alert('Email změněn.');
+    }
+    document.getElementById('logout').onclick=()=>{
+      localStorage.removeItem('currentUser');
+      window.location.href='index.html';
+    }
+  }else{
+    window.location.href='prihlaseni.html';
+  }
+}else if(document.getElementById('accName')){
+  window.location.href='prihlaseni.html';
 }
