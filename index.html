@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bezpečný Web — Registrace / Přihlášení</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Preview screen -->
+<div id="preview" class="hero">
+    <div class="logo-placeholder" id="logo">
+        <!-- zde později vložíš <img src="odkaz_na_logo.png"> -->
+        LOGO
+    </div>
+    <h1>Jen u nás je komunikace bezpečná</h1>
+    <p class="lead">Chraň své údaje. Ověření e-mailem pro bezpečí účtu.</p>
+    <div class="btn-row">
+        <button class="btn" id="registerBtn">Registrovat se</button>
+        <button class="white-btn" id="loginBtn">Přihlásit se</button>
+    </div>
+</div>
+
+<!-- Auth screens (registrace / přihlášení) -->
+<div id="authScreen" class="auth-screen" style="display:none;">
+    <div class="auth-content">
+        <h2 id="authTitle">Registrace</h2>
+        <input type="email" id="authEmail" placeholder="Email">
+        <input type="text" id="authName" placeholder="Jméno">
+        <input type="password" id="authPass" placeholder="Heslo">
+        <button id="authSubmit" class="btn">Odeslat</button>
+        <button id="authCancel" class="white-btn">Zavřít</button>
+        <div id="authInfo" class="hint"></div>
+    </div>
+</div>
+
+<!-- App screen -->
+<div id="appRoot" style="display:none;">
+    <div class="app">
+        <aside class="sidebar">
+            <div id="userTop" class="user-btn">
+                <div class="avatar">U</div>
+                <div>
+                    <div id="userNameTop">Uživatel</div>
+                    <div class="hint" id="userEmailTop">email@example.com</div>
+                </div>
+            </div>
+
+            <div class="sections" id="sectionList">
+                <div class="section-item active" data-section="account">Nastavení účtu</div>
+            </div>
+
+            <button id="logout" class="logout">Odhlásit se</button>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="logo-placeholder" style="width:64px;height:64px;font-size:14px" id="logoRight">LOGO</div>
+                    <div>
+                        <div class="hint">Vítej zpět,</div>
+                        <div id="userGreeting" style="font-weight:700;font-size:18px">Uživatel</div>
+                    </div>
+                </div>
+                <div>
+                    <button id="backToPreview" class="return-btn">Vrátit se</button>
+                </div>
+            </div>
+
+            <section id="contentArea">
+                <div id="accountSection" class="settings">
+                    <label>Jméno</label>
+                    <div class="inline">
+                        <input id="inpName" type="text">
+                        <button id="saveName" class="btn">Uložit</button>
+                    </div>
+                    <div class="hint" id="nameHint">Jméno lze měnit 1× za 7 dní.</div>
+
+                    <label>Aktuální heslo (pro potvrzení změn)</label>
+                    <input id="inpCurrent" type="password" placeholder="Současné heslo">
+
+                    <label>Nové heslo</label>
+                    <div class="inline">
+                        <input id="inpNewPass" type="password" placeholder="Nové heslo">
+                        <button id="savePass" class="btn">Změnit heslo</button>
+                    </div>
+
+                    <label>Nový e-mail</label>
+                    <div class="inline">
+                        <input id="inpNewEmail" type="email" placeholder="novy@email.cz">
+                        <button id="sendEmailConfirm" class="btn">Požádat o změnu</button>
+                    </div>
+                    <div class="hint">Pro změnu e-mailu zašleme potvrzovací odkaz.</div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
