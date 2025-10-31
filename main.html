@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Main</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" style="display:flex;gap:20px">
+  <div style="flex:0 0 150px;background:var(--card);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px">
+    <div class="section-item active" id="accountSection">Účet</div>
+    <!-- sem můžeš později přidat další sekce -->
+  </div>
+  <div style="flex:1">
+    <div id="accountContent" class="card">
+      <h1>Nastavení účtu</h1>
+      <div class="settings">
+        <div>
+          <label>Jméno</label>
+          <div class="inline">
+            <input type="text" id="accName">
+            <button id="saveName" class="btn btn-primary">Uložit</button>
+          </div>
+          <div class="hint" id="nameHint"></div>
+        </div>
+        <div>
+          <label>Heslo</label>
+          <input type="password" id="accPass">
+          <button id="savePass" class="btn btn-primary" style="margin-top:4px">Změnit heslo</button>
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" id="accEmail">
+          <button id="saveEmail" class="btn btn-primary" style="margin-top:4px">Změnit e-mail</button>
+        </div>
+      </div>
+      <button id="logout" class="logout">Odhlásit se</button>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
