@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ověření účtu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="logo-placeholder">LOGO</div>
+    <h1>Ověření účtu</h1>
+    <label>Email</label>
+    <input type="email" id="verifyEmail">
+    <label>Kód</label>
+    <input type="text" id="verifyCode">
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px">
+      <button id="verifyBtn" class="btn btn-primary">Ověřit</button>
+    </div>
+    <div class="small-muted" id="verifyInfo"></div>
+  </div>
+</div>
+<script>
+document.getElementById('verifyBtn').onclick=()=>{
+  const email=document.getElementById('verifyEmail').value.trim();
+  const code=document.getElementById('verifyCode').value.trim();
+  let users=JSON.parse(localStorage.getItem('users')||'{}');
+  const info=document.getElementById('verifyInfo');
+  if(!users[email]){info.textContent='Email neexistuje.'; return;}
+  if(users[email].code==code){users[email].verified=true; localStorage.setItem('users',JSON.stringify(users)); info.textContent='Účet ověřen. Můžeš se přihlásit.';}
+  else{info.textContent='Špatný kód.';}
+}
+</script>
+</body>
+</html>
