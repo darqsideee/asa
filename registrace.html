@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Registrace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="logo-placeholder">LOGO</div>
+    <h1>Registrovat se</h1>
+    <label>Email</label>
+    <input type="email" id="regEmail">
+    <label>Jméno</label>
+    <input type="text" id="regName">
+    <label>Heslo</label>
+    <input type="password" id="regPass">
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <a href="index.html" class="btn btn-secondary">Zpět</a>
+      <button id="registerBtn" class="btn btn-primary">Registrovat</button>
+    </div>
+    <div class="small-muted" id="regInfo"></div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
