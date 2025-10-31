@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Hlavní aplikace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="logo-placeholder">LOGO</div>
+    <h1>Nastavení účtu</h1>
+    <div class="settings">
+      <div>
+        <label>Jméno</label>
+        <div class="inline">
+          <input type="text" id="accName">
+          <button id="saveName" class="btn btn-primary">Uložit</button>
+        </div>
+        <div class="hint" id="nameHint"></div>
+      </div>
+      <div>
+        <label>Heslo</label>
+        <input type="password" id="accPass">
+        <button id="savePass" class="btn btn-primary" style="margin-top:4px">Změnit heslo</button>
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" id="accEmail">
+        <button id="saveEmail" class="btn btn-primary" style="margin-top:4px">Změnit e-mail</button>
+      </div>
+    </div>
+    <button id="logout" class="logout">Odhlásit se</button>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
