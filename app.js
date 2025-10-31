@@ -35,3 +35,61 @@ loginBtn.onclick = () => openAuth('login');
 authCancel.onclick = () => closeAuth();
 
 function openAuth(mode){
+    authScreen.style.display='flex';
+    authTitle.textContent = mode==='register'?'Registrace':'Přihlášení';
+    authInfo.textContent='';
+    authSubmit.onclick = async ()=>{
+        let email = authEmail.value.trim();
+        let name = authName.value.trim();
+        let pass = authPass.value;
+        let res = await api(`/api/${mode}`, {method:'POST', body:JSON.stringify({email,name,pass})});
+        if(res.success){
+            closeAuth();
+            loadApp(res.user);
+        } else authInfo.textContent = res.error||'Chyba';
+    }
+}
+function closeAuth(){ authScreen.style.display='none'; }
+
+// --- app logic ---
+function loadApp(user){
+    currentUser = user;
+    preview.style.display='none';
+    appRoot.style.display='grid';
+    userNameTop.textContent=user.name;
+    userEmailTop.textContent=user.email;
+    userGreeting.textContent=user.name;
+    inpName.value = user.name;
+    updateNameHint();
+}
+
+logoutBtn.onclick=async()=>{
+    await api('/api/logout',{method:'POST'});
+    location.reload();
+}
+backToPreview.onclick=()=>{
+    appRoot.style.display='none';
+    preview.style.display='block';
+}
+
+// --- name change ---
+saveName.onclick=async()=>{
+    let newName = inpName.value.trim();
+    if(!newName) return;
+    let res = await api('/api/change-name',{method:'POST',body:JSON.stringify({newName})});
+    if(res.success){
+        currentUser.name=newName;
+        userNameTop.textContent=newName;
+        userGreeting.textContent=newName;
+        updateNameHint();
+    } else {
+        nameHint.textContent = res.error;
+    }
+}
+function updateNameHint(){
+    api('/api/name-info').then(res=>{
+        if(res.daysLeft>0){
+            nameHint.textContent = `Změna jména již proběhla, zbývá ${res.daysLeft} dní`;
+        } else nameHint.textContent = 'Jméno lze měnit 1× za 7 dní.';
+    })
+}
