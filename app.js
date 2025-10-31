@@ -75,3 +75,8 @@ if(currentUser){
 }else if(document.getElementById('accName')){
   window.location.href='prihlaseni.html';
 }
+
+const code = Math.floor(100000 + Math.random()*900000); // náhodný kód 6 číslic
+users[email]={name,pass,date:Date.now(),verified:false, code:code};
+localStorage.setItem('users',JSON.stringify(users));
+info.innerHTML=`Registrace proběhla. Váš potvrzovací kód: <strong>${code}</strong>. Ověřte ho na stránce <a href="verify.html">Ověření</a>`;
