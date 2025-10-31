@@ -2,43 +2,35 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Main</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hlavní stránka</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<div class="container" style="display:flex;gap:20px">
-  <div style="flex:0 0 150px;background:var(--card);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px">
-    <div class="section-item active" id="accountSection">Účet</div>
-    <!-- sem můžeš později přidat další sekce -->
-  </div>
-  <div style="flex:1">
-    <div id="accountContent" class="card">
-      <h1>Nastavení účtu</h1>
-      <div class="settings">
-        <div>
-          <label>Jméno</label>
-          <div class="inline">
-            <input type="text" id="accName">
-            <button id="saveName" class="btn btn-primary">Uložit</button>
-          </div>
-          <div class="hint" id="nameHint"></div>
-        </div>
-        <div>
-          <label>Heslo</label>
-          <input type="password" id="accPass">
-          <button id="savePass" class="btn btn-primary" style="margin-top:4px">Změnit heslo</button>
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" id="accEmail">
-          <button id="saveEmail" class="btn btn-primary" style="margin-top:4px">Změnit e-mail</button>
-        </div>
-      </div>
-      <button id="logout" class="logout">Odhlásit se</button>
-    </div>
-  </div>
+<div class="main-container">
+    <aside class="sidebar">
+        <h3>Účet</h3>
+        <label>Jméno</label>
+        <input type="text" id="mainName">
+        <button id="saveNameBtn" class="btn">Uložit jméno</button>
+        <div id="nameInfo" class="info"></div>
+        <label>Aktuální heslo</label>
+        <input type="password" id="mainCurrent">
+        <label>Nové heslo</label>
+        <input type="password" id="mainNewPass">
+        <button id="savePassBtn" class="btn">Změnit heslo</button>
+        <div id="passInfo" class="info"></div>
+        <label>Nový email</label>
+        <input type="email" id="mainNewEmail">
+        <button id="saveEmailBtn" class="btn">Požádat o změnu</button>
+        <div id="emailInfo" class="info"></div>
+        <button id="logoutBtn" class="btn logout-btn">Odhlásit se</button>
+    </aside>
+    <section class="main-content">
+        <h2>Vítej zpět, <span id="mainUserName"></span></h2>
+        <p>Správa účtu a osobní nastavení.</p>
+    </section>
 </div>
-<script src="app.js"></script>
+<script src="../js/app.js"></script>
 </body>
 </html>
